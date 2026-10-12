@@ -1,0 +1,213 @@
+/* ---------------------------------------------------------------
+   Quentalk — studio backdrop
+   Fixed, full-screen layer that sits behind all page content.
+   --------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+
+  /* Cool neutral studio sweep */
+  --wall: #EDEDED;
+  --wall-bright: #F5F5F5;
+  --wall-edge: #E6E6E6;
+  --horizon-band: #D8D8D8;
+  --floor: #F3F3F3;
+
+  --horizon: 72%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--wall);
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+  /* Large viewport height so the horizon doesn't jump when mobile
+     browser toolbars show/hide. */
+  height: 100lvh;
+  pointer-events: none;
+  overflow: hidden;
+
+  background:
+    /* Floor is brightest in the middle */
+    radial-gradient(ellipse 60% 14% at 50% 82%, rgb(246 246 246 / 0.6), transparent 100%),
+
+    /* Soft even light: brightest upper center, no hotspot */
+    radial-gradient(ellipse 60% 55% at 50% 30%, var(--wall-bright) 0%, rgb(245 245 245 / 0.6) 45%, rgb(245 245 245 / 0) 100%),
+
+    /* Wall fades softly to a slightly deeper grey at the sides */
+    radial-gradient(ellipse 85% 95% at 50% 30%, transparent 50%, rgb(0 0 0 / 0.025) 100%),
+
+    /* Base: wall -> grey band -> soft horizon edge -> lighter floor */
+    linear-gradient(
+      to bottom,
+      var(--wall-edge) 0%,
+      var(--wall) 25%,
+      #EBEBEB 50%,
+      #E3E3E3 62%,
+      var(--horizon-band) calc(var(--horizon) - 1%),
+      #DCDCDC var(--horizon),
+      #E8E8E8 calc(var(--horizon) + 3%),
+      var(--floor) calc(var(--horizon) + 10%),
+      #F1F1F1 94%,
+      #EEEEEE 100%
+    );
+}
+
+/* Fine photographic grain (tiny inline SVG noise tile) */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+
+/* ---------------------------------------------------------------
+   Hero
+   --------------------------------------------------------------- */
+
+.hero {
+  --title-size: clamp(3.25rem, 10.5vw, 8.5rem);
+  --title-top: 22vh;
+  --title-top: 22svh; /* puts the heading roughly 25–30% from the top */
+
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: var(--title-top) 16px 0;
+  text-align: center;
+  color: #000;
+}
+
+/* Handset hangs from the top of the screen, to the left of the heading */
+.hero__lockup {
+  --gap: clamp(0.75rem, 2vw, 2rem);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--gap);
+}
+
+/* Holds the handset's place in the row. On narrow screens it shrinks and
+   the handset bleeds off the left edge instead of pushing the heading off
+   the right ("QuenTalk" is ~3.16× its font size wide). */
+.hero__handset-slot {
+  /* Positioned on its own, not lined up with the heading */
+  --handset-h: calc(3 * max(
+    calc(var(--title-size) * 3.93),
+    calc((var(--title-top) + var(--title-size) * 0.1) / 0.542)
+  ));
+  --handset-w: calc(var(--handset-h) * 283 / 1463); /* handset.png aspect */
+
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  width: min(var(--handset-w), calc(100vw - 32px - var(--gap) - var(--title-size) * 3.16));
+  /* Bottom of the handset sits near the bottom of the screen; the cord
+     runs up off the top */
+  margin-top: calc(96vh - var(--handset-h) - var(--title-top));
+  margin-top: calc(96svh - var(--handset-h) - var(--title-top));
+}
+
+.hero__handset {
+  display: block;
+  flex: none;
+  height: var(--handset-h);
+  width: auto;
+  transform-origin: top center;
+  /* Faint red glow, echoing the original artwork */
+  --glow: drop-shadow(0 0 18px rgb(200 16 30 / 0.22));
+  filter: var(--glow);
+  animation:
+    handset-focus-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both,
+    handset-sway 2.8s ease-in-out infinite alternate both;
+  will-change: filter, opacity, transform, rotate;
+}
+
+/* Gentle pendulum swing from the top of the cord */
+@keyframes handset-sway {
+  from {
+    rotate: -1.3deg;
+  }
+  to {
+    rotate: 1.3deg;
+  }
+}
+
+.hero__title {
+  margin: 0;
+  font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: var(--title-size);
+  line-height: 1;
+  letter-spacing: -0.015em;
+
+  /* Entrance: comes into focus from a soft blur */
+  animation: title-focus-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+  /* Keeps the blur on the GPU so Safari animates it smoothly */
+  will-change: filter, opacity, transform;
+}
+
+@keyframes title-focus-in {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* Same entrance as the heading, keeping the glow */
+@keyframes handset-focus-in {
+  from {
+    opacity: 0;
+    filter: blur(12px) var(--glow);
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0) var(--glow);
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__title,
+  .hero__handset {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+.hero__tagline {
+  margin: clamp(1rem, 2.2vw, 1.75rem) 0 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  /* Scales with the heading so the line spans the same width as "QuenTalk" */
+  font-size: calc(var(--title-size) * 0.1465);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+}
