@@ -13,7 +13,7 @@
   --horizon-band: #D8D8D8;
   --floor: #F3F3F3;
 
-  --horizon: 72%;
+  --horizon: 80%;
 }
 
 *,
@@ -46,7 +46,7 @@ body {
 
   background:
     /* Floor is brightest in the middle */
-    radial-gradient(ellipse 60% 14% at 50% 82%, rgb(246 246 246 / 0.6), transparent 100%),
+    radial-gradient(ellipse 60% 14% at 50% calc(var(--horizon) + 10%), rgb(246 246 246 / 0.6), transparent 100%),
 
     /* Soft even light: brightest upper center, no hotspot */
     radial-gradient(ellipse 60% 55% at 50% 30%, var(--wall-bright) 0%, rgb(245 245 245 / 0.6) 45%, rgb(245 245 245 / 0) 100%),
@@ -59,8 +59,8 @@ body {
       to bottom,
       var(--wall-edge) 0%,
       var(--wall) 25%,
-      #EBEBEB 50%,
-      #E3E3E3 62%,
+      #EBEBEB calc(var(--horizon) - 22%),
+      #E3E3E3 calc(var(--horizon) - 10%),
       var(--horizon-band) calc(var(--horizon) - 1%),
       #DCDCDC var(--horizon),
       #E8E8E8 calc(var(--horizon) + 3%),
