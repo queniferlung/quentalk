@@ -20,13 +20,13 @@ function isReload() {
 const animateTitle = !isReload()
 
 /**
- * Opening sequence (ms): the handsets drop in first, in a shuffled order; the heading starts
- * coming into focus as the last one settles (1.4s), then the tagline types.
+ * Opening sequence (ms): the handsets drop in, in a shuffled order, while the heading comes
+ * into focus (1.4s). Then the tagline starts typing and the button rises, together.
  */
 const ENTER_TIME = 900
 const ENTER_STAGGER = 120
-const HEADING_DELAY = 3 * ENTER_STAGGER + ENTER_TIME
-const TAGLINE_DELAY = HEADING_DELAY + 1400
+/** The heading blurs in alongside the drops; tagline and button start together once it's in focus. */
+const TAGLINE_DELAY = 1400
 
 /**
  * How far down the page the heading sits (the handsets' cords run up from it to the top).
@@ -194,7 +194,14 @@ function App() {
   const [button, setButton] = useState<'waiting' | 'rising' | 'shown'>(() =>
     animateTitle && !prefersReducedMotion() ? 'waiting' : 'shown',
   )
-  const showButton = () => setButton((b) => (b === 'waiting' ? 'rising' : b))
+  // ...rising as the tagline starts typing, rather than waiting for it to finish
+  useEffect(() => {
+    if (button !== 'waiting') return
+    const timer = window.setTimeout(() => setButton((b) => (b === 'waiting' ? 'rising' : b)), TAGLINE_DELAY)
+    return () => window.clearTimeout(timer)
+    // Runs once on load
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   /*
    * Clicking "Send your story" rings and clears the stage (handsets reeled up, texts sink
@@ -350,7 +357,7 @@ function App() {
             word. Sized from a fixed phone-scale font rather than the heading, so they stay
             small on narrow tablets too.
           */}
-          <div className="pointer-events-none absolute inset-0 text-[min(19vw,74px)] min-[900px]:hidden">
+          <div className="pointer-events-none absolute inset-0 text-[min(19vw,74px)] max-[600px]:hidden min-[900px]:hidden">
             <HangingPhone
               photo={phoneRight}
               photoW={356}
@@ -387,6 +394,80 @@ function App() {
               enterOrder={0}
             />
           </div>
+          {/*
+            Under 600px: all four handsets, smaller, spaced evenly across the top (centred at
+            12.5%, 37.5%, 62.5% and 87.5% of the screen) and hanging well above the word.
+          */}
+          <div className="pointer-events-none absolute inset-0 text-[min(19vw,74px)] min-[600px]:hidden">
+            <HangingPhone
+              photo={phoneRight}
+              photoW={356}
+              photoH={1283}
+              cordX={0.452}
+              cord={cordRight}
+              coils={5}
+              trim={223}
+              hangTo="calc(-13.5svh - 53px)"
+              className="left-[calc(50%-37.5vw-0.237em)]"
+              swingDelay="-2.3s"
+              mirror
+              scale={0.62}
+              tilt={4}
+              move={move}
+              reelOrder={0}
+              enterOrder={1}
+            />
+            <HangingPhone
+              photo={phoneLeft}
+              photoW={334}
+              photoH={1216}
+              cordX={0.524}
+              cord={cordLeft}
+              coils={5}
+              trim={198}
+              hangTo="calc(-10.5svh - 53px)"
+              className="left-[calc(50%-12.5vw-0.2224em)]"
+              scale={0.62}
+              tilt={-3}
+              move={move}
+              reelOrder={1}
+              enterOrder={3}
+            />
+            <HangingPhone
+              photo={phoneRight}
+              photoW={356}
+              photoH={1283}
+              cordX={0.452}
+              cord={cordRight}
+              coils={5}
+              trim={223}
+              hangTo="calc(-15svh - 53px)"
+              className="left-[calc(50%+12.5vw-0.237em)]"
+              swingDelay="-1.6s"
+              scale={0.62}
+              tilt={2.5}
+              move={move}
+              reelOrder={2}
+              enterOrder={0}
+            />
+            <HangingPhone
+              photo={phoneFar}
+              photoW={313}
+              photoH={1097}
+              cordX={0.404}
+              cord={cordFar}
+              coils={5}
+              trim={172}
+              hangTo="calc(-12svh - 53px)"
+              className="left-[calc(50%+37.5vw-0.2084em)]"
+              swingDelay="-0.9s"
+              scale={0.62}
+              tilt={-4}
+              move={move}
+              reelOrder={3}
+              enterOrder={2}
+            />
+          </div>
           <h1
             className={`font-serif text-[1.2em] leading-none font-normal tracking-[-0.015em] text-black ${
               animateTitle && !hasLeft ? 'motion-safe:animate-focus-in' : ''
@@ -405,19 +486,21 @@ function App() {
             ref={sendButton}
             type="button"
             onClick={sendStory}
-            className="rounded-none bg-phone-red px-[48px] py-[20px] font-serif text-[27px] text-white transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-phone-red-dark hover:shadow-[0_6px_16px_rgb(0_0_0/0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-phone-red active:translate-y-0 active:shadow-none"
+            className="rounded-none bg-phone-red px-[48px] py-[20px] font-serif text-[27px] text-white max-[600px]:px-[38px] max-[600px]:py-[16px] max-[600px]:text-[21.6px] transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-phone-red-dark hover:shadow-[0_6px_16px_rgb(0_0_0/0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-phone-red active:translate-y-0 active:shadow-none"
           >
             Send your story
           </button>
         </div>
-        {/* Tagline under the button: types itself in once the heading is in focus */}
+        {/*
+          Tagline under the button: types itself in once the heading is in focus. Always one line:
+          on narrow screens the size shrinks to fit (the sentence is 19.74 × its font size wide).
+        */}
         <div style={textMove(move, 2)}>
           <TypedText
             text="A series where I try to untangle your problems."
             animate={animateTitle}
             delay={TAGLINE_DELAY}
-            onDone={showButton}
-            className="mt-[49px] font-sans text-[20.8px] leading-none text-[#555]"
+            className="mt-[49px] font-sans text-[min(20.8px,calc((100vw-48px)/19.8))] leading-none whitespace-nowrap text-[#555]"
           />
         </div>
       </main>
