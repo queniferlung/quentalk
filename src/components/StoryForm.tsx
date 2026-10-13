@@ -143,7 +143,7 @@ export default function StoryForm({ closing, onClose }: StoryFormProps) {
       <div className={`w-full max-w-[560px] ${reduced ? '' : 'animate-rise-in'}`}>
         {status === 'sent' ? (
           <div className="flex min-h-[460px] flex-col items-center justify-center text-center" role="status">
-            <h2 className="text-[clamp(1.6rem,5vw,2.25rem)] leading-tight tracking-[-0.01em] text-balance">Thank you. We&apos;ll take it from here.</h2>
+            <h2 className="font-serif text-[clamp(2.2rem,7vw,3.25rem)] leading-tight font-normal">Thank you!</h2>
             <button
               ref={back}
               type="button"
