@@ -148,7 +148,7 @@ export default function StoryForm({ closing, onClose }: StoryFormProps) {
               ref={back}
               type="button"
               onClick={onClose}
-              className="mt-8 text-[18px] text-neutral-700 underline underline-offset-4 transition-colors hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-phone-red"
+              className="mt-8 text-[18px] text-neutral-700 underline underline-offset-4 transition-colors outline-none hover:text-black focus-visible:text-black focus-visible:decoration-2"
             >
               Back
             </button>
