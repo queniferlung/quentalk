@@ -165,8 +165,11 @@ export default function StoryForm({ closing, onClose }: StoryFormProps) {
               aria-hidden
               className="absolute -left-[9999px] h-px w-px opacity-0"
             />
-            {/* Title, shown on every step */}
-            <h2 className="text-center font-serif text-[clamp(2.2rem,7vw,3.25rem)] leading-tight font-normal">
+            {/*
+              Title, shown on every step. Instrument Serif has no bold weight, so it's thickened
+              with a fine outline in the same colour instead of a blurry synthetic bold.
+            */}
+            <h2 className="text-center font-serif text-[clamp(2.2rem,7vw,3.25rem)] leading-tight font-normal [-webkit-text-stroke:0.035em_currentColor] [paint-order:stroke_fill]">
               Don&apos;t worry. It&apos;s anonymous.
             </h2>
 
