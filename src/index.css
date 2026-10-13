@@ -1,0 +1,151 @@
+@import 'tailwindcss';
+
+/*
+ * Twist Sans by Jasper Naus (Letterstudio, KABK), free for personal and commercial use with
+ * credit. Work-in-progress release; one weight. Missing ← and ×, which fall back to the system font.
+ */
+@font-face {
+  font-family: 'Twist Sans';
+  src: url('./assets/fonts/TwistSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* Cool neutral studio palette: no warm or beige tint */
+  --color-wall: #eceef0;
+
+  /* The handsets' red, measured from the photos (typical body tone) */
+  --color-phone-red: #a61410;
+  --color-phone-red-dark: #850f0c;
+
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Twist Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Gentle pendulum swing from the top of the cord */
+  --animate-swing: swing 3.2s ease-in-out infinite alternate;
+
+  @keyframes swing {
+    from {
+      rotate: -1.5deg;
+    }
+    to {
+      rotate: 1.5deg;
+    }
+  }
+
+  /* Blinking text cursor for the typed-in tagline */
+  --animate-caret: caret 0.9s steps(1, end) infinite;
+
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Opening: the button fades and rises 8px into place, last of all */
+  --animate-rise-in: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Opening: comes into focus from blurred and invisible, once the handsets have dropped in */
+  --animate-focus-in: focus-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.26s both;
+
+  @keyframes focus-in {
+    from {
+      opacity: 0;
+      filter: blur(14px);
+      transform: scale(1.04);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+  }
+}
+
+html {
+  color-scheme: light;
+  background: var(--color-wall);
+}
+
+/*
+ * Exit when "Send your story" is clicked. Handsets are reeled up by their cords: a tiny dip,
+ * then an accelerating pull off the top. The texts sink 40px and fade.
+ */
+@keyframes reel-up {
+  0% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.5, 1);
+  }
+  18% {
+    translate: 0 10px;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.4);
+  }
+  100% {
+    translate: 0 -115%;
+  }
+}
+
+@keyframes sink-out {
+  to {
+    opacity: 0;
+    translate: 0 40px;
+  }
+}
+
+/*
+ * Handsets dropping in from the top (on first open, and when the form closes): a fall that
+ * overshoots a little, bounces back up, then settles, like a spring
+ */
+@keyframes drop-in {
+  0% {
+    translate: 0 -115%;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.6, 1);
+  }
+  70% {
+    translate: 0 14px;
+    animation-timing-function: ease-in-out;
+  }
+  86% {
+    translate: 0 -5px;
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+/* ...and the texts slide back up into place */
+@keyframes rise-back {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+}
+
+/* Story form: each question slides in from the right (or from the left when going back) */
+@keyframes step-in {
+  from {
+    opacity: 0;
+    translate: 24px 0;
+  }
+}
+
+@keyframes step-back {
+  from {
+    opacity: 0;
+    translate: -24px 0;
+  }
+}
