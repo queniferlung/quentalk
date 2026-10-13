@@ -412,7 +412,7 @@ function App() {
               cord={cordRight}
               coils={5}
               trim={223}
-              hangTo="calc(-9.5svh - 53px)"
+              hangTo="calc(-6.5svh - 53px)"
               className="left-[calc(50%-37.5vw-0.237em)]"
               swingDelay="-2.3s"
               mirror
@@ -430,7 +430,7 @@ function App() {
               cord={cordLeft}
               coils={5}
               trim={198}
-              hangTo="calc(-6.5svh - 53px)"
+              hangTo="calc(-3.5svh - 53px)"
               className="left-[calc(50%-12.5vw-0.2224em)]"
               scale={0.62}
               tilt={-3}
@@ -446,7 +446,7 @@ function App() {
               cord={cordRight}
               coils={5}
               trim={223}
-              hangTo="calc(-11svh - 53px)"
+              hangTo="calc(-8svh - 53px)"
               className="left-[calc(50%+12.5vw-0.237em)]"
               swingDelay="-1.6s"
               scale={0.62}
@@ -463,7 +463,7 @@ function App() {
               cord={cordFar}
               coils={5}
               trim={172}
-              hangTo="calc(-8svh - 53px)"
+              hangTo="calc(-5svh - 53px)"
               className="left-[calc(50%+37.5vw-0.2084em)]"
               swingDelay="-0.9s"
               scale={0.62}
@@ -503,7 +503,7 @@ function App() {
         */}
         <div style={textMove(move, 2)}>
           <TypedText
-            text="A series where I try to untangle your problems."
+            text="A series where I untangle your problems."
             animate={animateTitle}
             delay={TAGLINE_DELAY}
             speed={[23, 30]}
@@ -518,12 +518,14 @@ function App() {
         */}
         <div
           aria-hidden
-          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.26] [--rotary-w:min(32vw,46svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-w:min(70vw,30svh)]"
+          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.33] [--rotary-extra:0px] [--rotary-w:min(41.6vw,59.8svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-extra:-8px] max-[600px]:[--rotary-w:min(77vw,33svh)]"
           style={{
             width: 'var(--rotary-w)',
-            // Mobile: the base is slightly cut off. Larger screens: a little over the top half
-            // shows (the phone is 0.6125 × its width tall; 0.26 × the width stays below the edge).
-            bottom: 'calc(var(--rotary-w) * var(--rotary-crop))',
+            // Mobile: the base is slightly cut off, with 8px to spare so even the bounce never shows
+            // its bottom edge. Larger screens: a little under the top half shows (the phone is
+            // 0.6125 × its width tall; 0.33 × the width stays below the edge), keeping it clear
+            // of the text on short laptop screens.
+            bottom: 'calc(var(--rotary-w) * var(--rotary-crop) + var(--rotary-extra))',
             ...(move === 'enter' && !prefersReducedMotion()
               ? { animation: `pop-up ${ENTER_TIME}ms linear both` }
               : textMove(move, 3)),

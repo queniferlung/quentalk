@@ -141,18 +141,22 @@ html {
   }
 }
 
-/* Mobile rotary phone on first open: rises from below the screen, overshoots a little, settles */
+/*
+ * Rotary phone on first open: rises from below the screen, overshoots a little, settles. The
+ * overshoot (6px) is less than the part of the base kept below the screen edge, so the bottom
+ * of the phone never comes into view.
+ */
 @keyframes pop-up {
   0% {
     translate: 0 110%;
     animation-timing-function: cubic-bezier(0.3, 0, 0.6, 1);
   }
   70% {
-    translate: 0 -10px;
+    translate: 0 -6px;
     animation-timing-function: ease-in-out;
   }
   86% {
-    translate: 0 3px;
+    translate: 0 2px;
     animation-timing-function: ease-in-out;
   }
   100% {
