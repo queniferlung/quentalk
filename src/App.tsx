@@ -482,9 +482,9 @@ function App() {
             QuenTalk
           </h1>
         </div>
-        {/* Rises as the tagline starts typing. Below the tagline, except on mobile where it's above it. */}
+        {/* Rises as the tagline starts typing, between the heading and the tagline */}
         <div
-          className={`order-3 mt-[47px] max-[600px]:order-2 max-[600px]:mt-[46px] ${button === 'waiting' ? 'opacity-0' : button === 'rising' ? 'animate-rise-in' : ''}`}
+          className={`mt-[57px] max-[600px]:mt-[46px] ${button === 'waiting' ? 'opacity-0' : button === 'rising' ? 'animate-rise-in' : ''}`}
           style={textMove(move, 1)}
         >
           <button
@@ -501,13 +501,13 @@ function App() {
           on narrow screens it's 84% of the size that would just fit (the sentence is 19.74 × its
           font size wide).
         */}
-        <div className="order-2 max-[600px]:order-3" style={textMove(move, 2)}>
+        <div style={textMove(move, 2)}>
           <TypedText
             text="A series where I try to untangle your problems."
             animate={animateTitle}
             delay={TAGLINE_DELAY}
             speed={[23, 30]}
-            className="mt-[60px] max-[600px]:mt-[52px] font-sans text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555] max-[600px]:relative max-[600px]:-top-[4px]"
+            className="mt-[49px] max-[600px]:mt-[52px] font-sans text-[20.75px] max-[600px]:text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555] max-[600px]:relative max-[600px]:-top-[4px]"
           />
         </div>
         {/*
@@ -518,18 +518,18 @@ function App() {
         */}
         <div
           aria-hidden
-          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.3675] [--rotary-w:min(32vw,46svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-w:min(70vw,30svh)]"
+          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.26] [--rotary-w:min(32vw,46svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-w:min(70vw,30svh)]"
           style={{
             width: 'var(--rotary-w)',
-            // Mobile: the base is slightly cut off. Larger screens: only the top half shows
-            // (the phone is 0.735 × its width tall, so half of it is 0.3675 × the width).
+            // Mobile: the base is slightly cut off. Larger screens: a little over the top half
+            // shows (the phone is 0.6125 × its width tall; 0.26 × the width stays below the edge).
             bottom: 'calc(var(--rotary-w) * var(--rotary-crop))',
             ...(move === 'enter' && !prefersReducedMotion()
               ? { animation: `pop-up ${ENTER_TIME}ms linear both` }
               : textMove(move, 3)),
           }}
         >
-          <img src={rotaryPhone} alt="" width={800} height={588} className="block h-auto w-full" />
+          <img src={rotaryPhone} alt="" width={800} height={490} className="block h-auto w-full" />
         </div>
       </main>
       {(phase === 'form' || phase === 'closing') && <StoryForm closing={phase === 'closing'} onClose={closeForm} />}
