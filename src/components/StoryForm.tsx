@@ -165,11 +165,8 @@ export default function StoryForm({ closing, onClose }: StoryFormProps) {
               aria-hidden
               className="absolute -left-[9999px] h-px w-px opacity-0"
             />
-            {/* Title on the first step; the space is kept on later steps so nothing jumps */}
-            <h2
-              className={`text-center font-serif text-[clamp(2.2rem,7vw,3.25rem)] leading-tight font-normal ${step === 0 ? '' : 'invisible'}`}
-              aria-hidden={step !== 0 || undefined}
-            >
+            {/* Title, shown on every step */}
+            <h2 className="text-center font-serif text-[clamp(2.2rem,7vw,3.25rem)] leading-tight font-normal">
               Don&apos;t worry. It&apos;s anonymous.
             </h2>
 
@@ -211,6 +208,13 @@ export default function StoryForm({ closing, onClose }: StoryFormProps) {
                   if (problem === 'empty') setProblem('')
                 }}
                 placeholder={current.placeholder}
+                // Enter moves on (Next / Submit); Shift+Enter still adds a new line
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                    e.preventDefault()
+                    e.currentTarget.form?.requestSubmit()
+                  }
+                }}
                 rows={4}
                 required
                 aria-invalid={problem === 'empty' || undefined}
