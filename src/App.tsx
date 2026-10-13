@@ -25,8 +25,11 @@ const animateTitle = !isReload()
  */
 const ENTER_TIME = 900
 const ENTER_STAGGER = 120
-/** The heading blurs in alongside the drops; tagline and button start together once it's in focus. */
-const TAGLINE_DELAY = 1400
+/**
+ * The heading blurs in alongside the drops; the tagline and button start together as the last
+ * handset settles (the heading's ease-out has visibly finished by then), with no pause.
+ */
+const TAGLINE_DELAY = 3 * ENTER_STAGGER + ENTER_TIME
 
 /**
  * How far down the page the heading sits (the handsets' cords run up from it to the top).
@@ -258,7 +261,7 @@ function App() {
     <>
       <Backdrop />
       <main
-        className={`min-h-svh px-4 pt-(--title-top) text-center [--title-top:calc(25svh+53px)] max-[900px]:[--title-top:calc(32svh+53px)] motion-reduce:transition-opacity motion-reduce:duration-1000 ${
+        className={`min-h-svh px-4 pt-(--title-top) text-center [--title-top:calc(25svh+53px)] max-[900px]:[--title-top:calc(32svh+53px)] max-[600px]:[--title-top:calc(24svh+53px)] motion-reduce:transition-opacity motion-reduce:duration-1000 ${
           away ? 'pointer-events-none' : ''
         } ${move === 'leave' ? 'motion-reduce:opacity-0' : ''}`}
         aria-hidden={away || undefined}
@@ -396,7 +399,8 @@ function App() {
           </div>
           {/*
             Under 600px: all four handsets, smaller, spaced evenly across the top (centred at
-            12.5%, 37.5%, 62.5% and 87.5% of the screen) and hanging well above the word.
+            12.5%, 37.5%, 62.5% and 87.5% of the screen) and hanging well above the word. (The
+            heading sits 8svh higher here, so the cords are 8svh shorter to keep them in place.)
           */}
           <div className="pointer-events-none absolute inset-0 text-[min(19vw,74px)] min-[600px]:hidden">
             <HangingPhone
@@ -407,7 +411,7 @@ function App() {
               cord={cordRight}
               coils={5}
               trim={223}
-              hangTo="calc(-13.5svh - 53px)"
+              hangTo="calc(-5.5svh - 53px)"
               className="left-[calc(50%-37.5vw-0.237em)]"
               swingDelay="-2.3s"
               mirror
@@ -425,7 +429,7 @@ function App() {
               cord={cordLeft}
               coils={5}
               trim={198}
-              hangTo="calc(-10.5svh - 53px)"
+              hangTo="calc(-2.5svh - 53px)"
               className="left-[calc(50%-12.5vw-0.2224em)]"
               scale={0.62}
               tilt={-3}
@@ -441,7 +445,7 @@ function App() {
               cord={cordRight}
               coils={5}
               trim={223}
-              hangTo="calc(-15svh - 53px)"
+              hangTo="calc(-7svh - 53px)"
               className="left-[calc(50%+12.5vw-0.237em)]"
               swingDelay="-1.6s"
               scale={0.62}
@@ -458,7 +462,7 @@ function App() {
               cord={cordFar}
               coils={5}
               trim={172}
-              hangTo="calc(-12svh - 53px)"
+              hangTo="calc(-4svh - 53px)"
               className="left-[calc(50%+37.5vw-0.2084em)]"
               swingDelay="-0.9s"
               scale={0.62}
@@ -493,14 +497,16 @@ function App() {
         </div>
         {/*
           Tagline under the button: types itself in once the heading is in focus. Always one line:
-          on narrow screens the size shrinks to fit (the sentence is 19.74 × its font size wide).
+          on narrow screens it's 80% of the size that would just fit (the sentence is 19.74 × its
+          font size wide).
         */}
         <div style={textMove(move, 2)}>
           <TypedText
             text="A series where I try to untangle your problems."
             animate={animateTitle}
             delay={TAGLINE_DELAY}
-            className="mt-[49px] font-sans text-[min(20.8px,calc((100vw-48px)/19.8))] leading-none whitespace-nowrap text-[#555]"
+            speed={[23, 30]}
+            className="mt-[49px] font-sans text-[min(20.8px,calc((100vw-48px)/24.75))] leading-none whitespace-nowrap text-[#555]"
           />
         </div>
       </main>
