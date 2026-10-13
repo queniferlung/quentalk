@@ -261,7 +261,7 @@ function App() {
     <>
       <Backdrop />
       <main
-        className={`min-h-svh px-4 pt-(--title-top) text-center [--title-top:calc(25svh+53px)] max-[900px]:[--title-top:calc(32svh+53px)] max-[600px]:[--title-top:calc(24svh+53px)] motion-reduce:transition-opacity motion-reduce:duration-1000 ${
+        className={`min-h-svh px-4 pt-(--title-top) text-center [--title-top:calc(25svh+53px)] max-[900px]:[--title-top:calc(32svh+53px)] max-[600px]:[--title-top:calc(28svh+53px)] motion-reduce:transition-opacity motion-reduce:duration-1000 ${
           away ? 'pointer-events-none' : ''
         } ${move === 'leave' ? 'motion-reduce:opacity-0' : ''}`}
         aria-hidden={away || undefined}
@@ -400,7 +400,7 @@ function App() {
           {/*
             Under 600px: all four handsets, smaller, spaced evenly across the top (centred at
             12.5%, 37.5%, 62.5% and 87.5% of the screen) and hanging well above the word. (The
-            heading sits 8svh higher here, so the cords are 8svh shorter to keep them in place.)
+            heading sits 4svh higher here, so the cords are 4svh shorter to keep them in place.)
           */}
           <div className="pointer-events-none absolute inset-0 text-[min(19vw,74px)] min-[600px]:hidden">
             <HangingPhone
@@ -411,7 +411,7 @@ function App() {
               cord={cordRight}
               coils={5}
               trim={223}
-              hangTo="calc(-5.5svh - 53px)"
+              hangTo="calc(-9.5svh - 53px)"
               className="left-[calc(50%-37.5vw-0.237em)]"
               swingDelay="-2.3s"
               mirror
@@ -429,7 +429,7 @@ function App() {
               cord={cordLeft}
               coils={5}
               trim={198}
-              hangTo="calc(-2.5svh - 53px)"
+              hangTo="calc(-6.5svh - 53px)"
               className="left-[calc(50%-12.5vw-0.2224em)]"
               scale={0.62}
               tilt={-3}
@@ -445,7 +445,7 @@ function App() {
               cord={cordRight}
               coils={5}
               trim={223}
-              hangTo="calc(-7svh - 53px)"
+              hangTo="calc(-11svh - 53px)"
               className="left-[calc(50%+12.5vw-0.237em)]"
               swingDelay="-1.6s"
               scale={0.62}
@@ -462,7 +462,7 @@ function App() {
               cord={cordFar}
               coils={5}
               trim={172}
-              hangTo="calc(-4svh - 53px)"
+              hangTo="calc(-8svh - 53px)"
               className="left-[calc(50%+37.5vw-0.2084em)]"
               swingDelay="-0.9s"
               scale={0.62}
