@@ -7,9 +7,9 @@ import { ringOnce } from './ring'
 import cordLeft from './assets/cord.png'
 import cordFar from './assets/cord-far.png'
 import cordRight from './assets/cord-right.png'
-import phoneFar from './assets/phone-far.png'
-import phoneLeft from './assets/phone.png'
-import phoneRight from './assets/phone-right.png'
+import phoneFar from './assets/phone-far.webp'
+import phoneLeft from './assets/phone.webp'
+import phoneRight from './assets/phone-right.webp'
 import rotaryPhone from './assets/rotary-phone.webp'
 
 /** True when this page load is a refresh, so the opening animation can be skipped. */
