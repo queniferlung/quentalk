@@ -473,7 +473,7 @@ function App() {
             />
           </div>
           <h1
-            className={`font-serif text-[1.2em] leading-none font-normal tracking-[-0.015em] text-black ${
+            className={`relative -top-[12px] font-serif text-[1.2em] leading-none font-normal tracking-[-0.015em] text-black ${
               animateTitle && !hasLeft ? 'motion-safe:animate-focus-in' : ''
             }`}
             style={textMove(move, 0)}
@@ -497,7 +497,7 @@ function App() {
         </div>
         {/*
           Tagline under the button: types itself in once the heading is in focus. Always one line:
-          on narrow screens it's 80% of the size that would just fit (the sentence is 19.74 × its
+          on narrow screens it's 84% of the size that would just fit (the sentence is 19.74 × its
           font size wide).
         */}
         <div style={textMove(move, 2)}>
@@ -506,7 +506,7 @@ function App() {
             animate={animateTitle}
             delay={TAGLINE_DELAY}
             speed={[23, 30]}
-            className="mt-[49px] font-sans text-[min(20.8px,calc((100vw-48px)/24.75))] leading-none whitespace-nowrap text-[#555]"
+            className="mt-[49px] font-sans text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555]"
           />
         </div>
       </main>
