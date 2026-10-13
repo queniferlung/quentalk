@@ -10,6 +10,7 @@ import cordRight from './assets/cord-right.png'
 import phoneFar from './assets/phone-far.png'
 import phoneLeft from './assets/phone.png'
 import phoneRight from './assets/phone-right.png'
+import rotaryPhone from './assets/rotary-phone.webp'
 
 /** True when this page load is a refresh, so the opening animation can be skipped. */
 function isReload() {
@@ -506,8 +507,27 @@ function App() {
             animate={animateTitle}
             delay={TAGLINE_DELAY}
             speed={[23, 30]}
-            className="mt-[49px] font-sans text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555]"
+            className="mt-[49px] font-sans text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555] max-[600px]:relative max-[600px]:-top-[4px]"
           />
+        </div>
+        {/*
+          Mobile only (under 600px): the red rotary phone sits at the bottom of the screen, its
+          base slightly cut off by the bottom edge. Sized from the screen height (and width) so
+          it stays clear of the tagline on short phones too. On first open it springs up from
+          below the screen with a slight bounce, as the handsets drop in from the top.
+        */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed left-[calc(50%-min(35vw,15svh))] min-[600px]:hidden"
+          style={{
+            width: 'min(70vw, 30svh)',
+            bottom: 'calc(min(70vw, 30svh) * -0.06)',
+            ...(move === 'enter' && !prefersReducedMotion()
+              ? { animation: `pop-up ${ENTER_TIME}ms linear both` }
+              : textMove(move, 3)),
+          }}
+        >
+          <img src={rotaryPhone} alt="" width={800} height={588} className="block h-auto w-full" />
         </div>
       </main>
       {(phase === 'form' || phase === 'closing') && <StoryForm closing={phase === 'closing'} onClose={closeForm} />}
