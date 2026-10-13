@@ -27,10 +27,10 @@ const animateTitle = !isReload()
 const ENTER_TIME = 900
 const ENTER_STAGGER = 120
 /**
- * The heading blurs in alongside the drops; the tagline and button start together as the last
- * handset settles (the heading's ease-out has visibly finished by then), with no pause.
+ * The heading blurs in alongside the drops; the tagline and button start together a little
+ * before the last handset settles (at 1.26s), so the two waves overlap slightly.
  */
-const TAGLINE_DELAY = 3 * ENTER_STAGGER + ENTER_TIME
+const TAGLINE_DELAY = 1000
 
 /**
  * How far down the page the heading sits (the handsets' cords run up from it to the top).
@@ -262,7 +262,7 @@ function App() {
     <>
       <Backdrop />
       <main
-        className={`min-h-svh px-4 pt-(--title-top) text-center [--title-top:calc(25svh+53px)] max-[900px]:[--title-top:calc(32svh+53px)] max-[600px]:[--title-top:calc(28svh+53px)] motion-reduce:transition-opacity motion-reduce:duration-1000 ${
+        className={`min-h-svh px-4 pt-(--title-top) text-center flex flex-col items-center [--title-top:calc(25svh+53px)] max-[900px]:[--title-top:calc(32svh+53px)] max-[600px]:[--title-top:calc(28svh+53px)] motion-reduce:transition-opacity motion-reduce:duration-1000 ${
           away ? 'pointer-events-none' : ''
         } ${move === 'leave' ? 'motion-reduce:opacity-0' : ''}`}
         aria-hidden={away || undefined}
@@ -482,16 +482,16 @@ function App() {
             QuenTalk
           </h1>
         </div>
-        {/* Last to appear: fades and slides up gently once the tagline has typed */}
+        {/* Rises as the tagline starts typing. Below the tagline, except on mobile where it's above it. */}
         <div
-          className={`mt-[57px] ${button === 'waiting' ? 'opacity-0' : button === 'rising' ? 'animate-rise-in' : ''}`}
+          className={`order-3 mt-[47px] max-[600px]:order-2 max-[600px]:mt-[46px] ${button === 'waiting' ? 'opacity-0' : button === 'rising' ? 'animate-rise-in' : ''}`}
           style={textMove(move, 1)}
         >
           <button
             ref={sendButton}
             type="button"
             onClick={sendStory}
-            className="rounded-none bg-phone-red px-[48px] py-[20px] font-serif text-[27px] text-white max-[600px]:px-[38px] max-[600px]:py-[16px] max-[600px]:text-[21.6px] transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-phone-red-dark hover:shadow-[0_6px_16px_rgb(0_0_0/0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-phone-red active:translate-y-0 active:shadow-none"
+            className="rounded-none bg-neutral-900 px-[48px] py-[20px] font-serif text-[27px] text-white max-[600px]:px-[38px] max-[600px]:py-[16px] max-[600px]:text-[21.6px] transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-black hover:shadow-[0_6px_16px_rgb(0_0_0/0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black active:translate-y-0 active:shadow-none"
           >
             Send your story
           </button>
@@ -501,27 +501,29 @@ function App() {
           on narrow screens it's 84% of the size that would just fit (the sentence is 19.74 × its
           font size wide).
         */}
-        <div style={textMove(move, 2)}>
+        <div className="order-2 max-[600px]:order-3" style={textMove(move, 2)}>
           <TypedText
             text="A series where I try to untangle your problems."
             animate={animateTitle}
             delay={TAGLINE_DELAY}
             speed={[23, 30]}
-            className="mt-[49px] font-sans text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555] max-[600px]:relative max-[600px]:-top-[4px]"
+            className="mt-[60px] max-[600px]:mt-[52px] font-sans text-[min(21.84px,calc((100vw-48px)/23.57))] leading-none whitespace-nowrap text-[#555] max-[600px]:relative max-[600px]:-top-[4px]"
           />
         </div>
         {/*
-          Mobile only (under 600px): the red rotary phone sits at the bottom of the screen, its
-          base slightly cut off by the bottom edge. Sized from the screen height (and width) so
+          The red rotary phone sits at the bottom of the screen: on mobile its base is slightly cut
+          off by the bottom edge; on larger screens only its top half shows. Sized from the screen height (and width) so
           it stays clear of the tagline on short phones too. On first open it springs up from
           below the screen with a slight bounce, as the handsets drop in from the top.
         */}
         <div
           aria-hidden
-          className="pointer-events-none fixed left-[calc(50%-min(35vw,15svh))] min-[600px]:hidden"
+          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.3675] [--rotary-w:min(32vw,46svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-w:min(70vw,30svh)]"
           style={{
-            width: 'min(70vw, 30svh)',
-            bottom: 'calc(min(70vw, 30svh) * -0.06)',
+            width: 'var(--rotary-w)',
+            // Mobile: the base is slightly cut off. Larger screens: only the top half shows
+            // (the phone is 0.735 × its width tall, so half of it is 0.3675 × the width).
+            bottom: 'calc(var(--rotary-w) * var(--rotary-crop))',
             ...(move === 'enter' && !prefersReducedMotion()
               ? { animation: `pop-up ${ENTER_TIME}ms linear both` }
               : textMove(move, 3)),
