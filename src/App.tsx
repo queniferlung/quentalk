@@ -413,10 +413,10 @@ function App() {
               coils={5}
               trim={223}
               hangTo="calc(-6.5svh - 53px)"
-              className="left-[calc(50%-37.5vw-0.237em)]"
+              className="left-[calc(50%-37.5vw-0.2982em)]"
               swingDelay="-2.3s"
               mirror
-              scale={0.62}
+              scale={0.78}
               tilt={4}
               move={move}
               reelOrder={0}
@@ -431,8 +431,8 @@ function App() {
               coils={5}
               trim={198}
               hangTo="calc(-3.5svh - 53px)"
-              className="left-[calc(50%-12.5vw-0.2224em)]"
-              scale={0.62}
+              className="left-[calc(50%-12.5vw-0.2797em)]"
+              scale={0.78}
               tilt={-3}
               move={move}
               reelOrder={1}
@@ -447,9 +447,9 @@ function App() {
               coils={5}
               trim={223}
               hangTo="calc(-8svh - 53px)"
-              className="left-[calc(50%+12.5vw-0.237em)]"
+              className="left-[calc(50%+12.5vw-0.2982em)]"
               swingDelay="-1.6s"
-              scale={0.62}
+              scale={0.78}
               tilt={2.5}
               move={move}
               reelOrder={2}
@@ -464,9 +464,9 @@ function App() {
               coils={5}
               trim={172}
               hangTo="calc(-5svh - 53px)"
-              className="left-[calc(50%+37.5vw-0.2084em)]"
+              className="left-[calc(50%+37.5vw-0.2621em)]"
               swingDelay="-0.9s"
-              scale={0.62}
+              scale={0.78}
               tilt={-4}
               move={move}
               reelOrder={3}
@@ -518,7 +518,7 @@ function App() {
         */}
         <div
           aria-hidden
-          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.33] [--rotary-extra:0px] [--rotary-w:min(41.6vw,59.8svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-extra:-8px] max-[600px]:[--rotary-w:min(77vw,33svh)]"
+          className="pointer-events-none fixed left-[calc(50%-var(--rotary-w)/2)] [--rotary-crop:-0.33] [--rotary-extra:0px] [--rotary-w:min(41.6vw,59.8svh)] max-[600px]:[--rotary-crop:-0.06] max-[600px]:[--rotary-extra:-8px] max-[600px]:[--rotary-w:min(92vw,40svh)]"
           style={{
             width: 'var(--rotary-w)',
             // Mobile: the base is slightly cut off, with 8px to spare so even the bounce never shows
